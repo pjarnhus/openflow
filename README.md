@@ -8,3 +8,4 @@
 | Mental Model Checker | Checks that the user's mental model of the solution is still valid after a phase. Finds drift through conversation and documents the phase. Questions the user about structure and design decisions. |
 | Phase Reviewer | Reviews finished phases against acceptance criteria. Updates progress checklists and writes agent-facing coding standards. Reports findings and lets the user decide. |
 | Test Writer | Writes executable unit tests for each task. Ensures implementation meets acceptance criteria and adheres to the test framework. Focuses on minimal, focused tests that verify correctness. |
+| User Story Writer | Converts non-technical requirements from `docs/specs.md` into clear, actionable user stories. Phrases each story from the end user's perspective using the format "As a [role], I want [goal], so that [benefit]." Reviews user personas, functional requirements, and success criteria to derive stories that capture all system functionality. |

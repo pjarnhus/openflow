@@ -7,3 +7,4 @@
 | Lead Developer | Breaks down implementation plans into executable tasks for each phase. Translates high-level plans into actionable, testable units of work. Focuses on task decomposition and documentation. |
 | Mental Model Checker | Checks that the user's mental model of the solution is still valid after a phase. Finds drift through conversation and documents the phase. Questions the user about structure and design decisions. |
 | Phase Reviewer | Reviews finished phases against acceptance criteria. Updates progress checklists and writes agent-facing coding standards. Reports findings and lets the user decide. |
+| Test Writer | Writes executable unit tests for each task. Ensures implementation meets acceptance criteria and adheres to the test framework. Focuses on minimal, focused tests that verify correctness. |

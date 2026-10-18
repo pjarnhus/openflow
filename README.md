@@ -1,3 +1,87 @@
+# Data Flow
+* Requirement Analyst
+    * Input
+        * `docs/terms/` - Definitions injected in command
+    * Output
+        * `docs/terms/` - `glossary_setDefinition`
+        * `docs/specs.md`
+* User Story Writer
+    * Input
+        * `docs/terms/` - Definitions injected in command
+        * `docs/specs.md`
+    * Output
+        * `docs/user_stories/user_story_<K>.md`
+        * `progress.md` - Writes User Story items
+* Technical Architect
+    * Input
+        * `docs/specs.md`
+        * `docs/user_stories/*`
+        * `docs/terms` - Implementations injected in command
+        * `docs/architecture.md`
+        * `docs/tool_stack.md`
+        * `docs/code_standards.md`
+        * `docs/ADR/*` - Only needed for invalidating stack or architecture decision
+        * `docs/sprints/*`
+    * Output
+        * `docs/tool_stack.md`
+        * `docs/architecture.md`
+        * `docs/plan.md`
+        * `docs/code_standards.md`
+        * `docs/progress.md` - Adds phase items to user story items
+        * `docs/ADR/`
+        * `docs/terms/` - `glossary_proposeChange`
+* Lead Developer
+    * Input
+        * `docs/plan.md`
+        * `docs/plans/user_story_<K>/phase_<M>.md`
+        * `docs/user_stories/user_story_<K>.md`
+        * `docs/tool_stack.md`
+        * `docs/code_standards.md`
+        * `src/`
+    * Output
+        * `docs/plans/user_story_<K>/phase_<M>/task_<N>.md`
+        * `progress.md` - Adds task items to phase item
+* Test Writer
+    * Input
+        * `docs/code_standards.md` 
+        * `docs/tool_stack.md`
+        * `docs/user_story_<K>/phase_<M>/task_<N>.md`
+    * Output
+        * Unit test code
+* Developer
+    * Input
+        * `docs/tool_stack.md`
+        * `docs/code_standards.md`
+        * `docs/user_story_<K>/phase_<M>/task_<N>.md`
+        * Unit tests for task
+    * Output
+        * `docs/progress.md` - Checks off task
+        * Code for task
+* Phase Reviewer
+    * Input
+        * `docs/plans/user_story_<K>/phase_<M>.md`
+        * List of changed files
+    * Output
+        * `docs/code_standards` - Updates with changes
+        * `docs/plans/user_story_<K>/phase_<M>.md` - Checks off Acceptance Criteria
+        * `docs/progress.md` - Checks off phase item. Checks off user story item, if all phases are checked
+* Documenter
+    * Input
+        * `docs/plans/user_story_<K>/phase_<M>.md`
+    * Output
+        * `docs/reviews/review_<K>_<N>.md`
+* Consolidator
+    * Input
+        * `docs/terms/` - Full glossary, including open proposals and statuses
+        * List of changed files
+        * `docs/terms/_decision_log.jsonl`
+    * Output
+        * `docs/terms/` - Applies or rejects proposals via `glossary_applyProposal` and `glossary_rejectProposal`. Promotes ratified terms via `glossary_promoteStatus`
+        * `docs/terms/_index.json` - Regenerated at end of session with `glossary_regenerateIndex`
+        * `docs/terms/_decision_log.jsonl`
+        * `docs/sprints/sprint_<J>/summary.md`
+
+
 # Agents
 The *openflow* design implements several agents.
 All but the `Junior Developer` are part of the flow.

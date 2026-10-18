@@ -1,0 +1,113 @@
+#!/bin/bash
+# locate repo root: directory of this script
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ ! -d "$SCRIPT_DIR/agents" ] || [ ! -d "$SCRIPT_DIR/plugins" ] || [ ! -d "$SCRIPT_DIR/commands" ]; then
+    echo "Error: cannot find required directories (agents, plugins, commands) in script location."
+    exit 1
+fi
+REPO_ROOT="$SCRIPT_DIR"
+
+# ensure target directory exists
+TARGET_HOME="$HOME/.opencode"
+if [ ! -d "$TARGET_HOME" ]; then
+    mkdir -p "$TARGET_HOME"
+fi
+
+# arrays for status
+OK_FILES=()     # entries stored as "dir/filename"
+ERROR_FILES=()
+
+# evaluate each source directory
+for DIR in agents plugins commands; do
+    SOURCE_DIR="$REPO_ROOT/$DIR"
+    TARGET_DIR="$TARGET_HOME/$DIR"
+
+    # make sure the target sub‑directory exists
+    if [ ! -d "$TARGET_DIR" ]; then
+        mkdir -p "$TARGET_DIR"
+    fi
+
+    # iterate regular files only (one level deep)
+    for SOURCE_FILE in "$SOURCE_DIR"/*; do
+        # skip if not a regular file
+        [ -f "$SOURCE_FILE" ] || continue
+
+        REL_NAME="$(basename "$SOURCE_FILE")"
+        TARGET_FILE="$TARGET_DIR/$REL_NAME"
+
+        # determine real paths for comparison
+        SOURCE_REAL="$(readlink -f "$SOURCE_FILE")"
+        if [ -L "$TARGET_FILE" ]; then
+            LINK_REAL="$(readlink -f "$TARGET_FILE")"
+            if [ "$LINK_REAL" = "$SOURCE_REAL" ]; then
+                echo "OK: $TARGET_FILE already links to $SOURCE_REAL"
+            else
+                echo "Error: $TARGET_FILE points to $LINK_REAL (expected $SOURCE_REAL)"
+                ERROR_FILES+=("$DIR/$REL_NAME")
+            fi
+        elif [ -e "$TARGET_FILE" ]; then
+            echo "Error: $TARGET_FILE exists (not a link) (expected link to $SOURCE_REAL)"
+            ERROR_FILES+=("$DIR/$REL_NAME")
+        else
+            echo "OK: $TARGET_FILE does not exist yet"
+            OK_FILES+=("$DIR/$REL_NAME")
+        fi
+    done
+done
+
+# show menu
+echo "Choose action:"
+echo "  a) Link all OK files"
+echo "  b) Link OK files one by one"
+echo "  c) Force overwrite error files"
+echo "  d) Abort without changes"
+read -r CHOICE
+
+# helper to split "dir/filename" into dir and name
+split_entry() {
+    local entry="$1"
+    local d="${entry%/*}"
+    local n="${entry#*/}"
+    echo "$d $n"
+}
+
+case "$CHOICE" in
+    a)
+        for entry in "${OK_FILES[@]}"; do
+            read -r DIR NAME <<< "$(split_entry "$entry")"
+            TARGET="$TARGET_HOME/$DIR/$NAME"
+            SOURCE="$REPO_ROOT/$DIR/$NAME"
+            ln -sf "$SOURCE" "$TARGET"
+            echo "Linked $DIR/$NAME"
+        done
+        ;;
+    b)
+        for entry in "${OK_FILES[@]}"; do
+            read -r DIR NAME <<< "$(split_entry "$entry")"
+            TARGET="$TARGET_HOME/$DIR/$NAME"
+            SOURCE="$REPO_ROOT/$DIR/$NAME"
+            read -r -p "Link $DIR/$NAME? (y/n) " ANSWER
+            if [[ "$ANSWER" == "y" || "$ANSWER" == "Y" ]]; then
+                ln -sf "$SOURCE" "$TARGET"
+                echo "Linked $DIR/$NAME"
+            else
+                echo "Skipped $DIR/$NAME"
+            fi
+        done
+        ;;
+    c)
+        for entry in "${ERROR_FILES[@]}"; do
+            read -r DIR NAME <<< "$(split_entry "$entry")"
+            TARGET="$TARGET_HOME/$DIR/$NAME"
+            SOURCE="$REPO_ROOT/$DIR/$NAME"
+            ln -sf "$SOURCE" "$TARGET"
+            echo "Overwrote error $DIR/$NAME"
+        done
+        ;;
+    d)
+        echo "Aborted"
+        ;;
+    *)
+        echo "Invalid choice"
+        ;;
+esac

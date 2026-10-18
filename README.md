@@ -99,6 +99,27 @@ All but the `Junior Developer` are part of the flow.
 | Test Writer | Writes executable unit tests for each task. Ensures implementation meets acceptance criteria and adheres to the test framework. Focuses on minimal, focused tests that verify correctness. |
 | User Story Writer | Converts non-technical requirements from `docs/specs.md` into clear, actionable user stories. Phrases each story from the end user's perspective using the format "As a [role], I want [goal], so that [benefit]." Reviews user personas, functional requirements, and success criteria to derive stories that capture all system functionality. |
 
+## Agent prompts
+All agents are defined using a standardised prompt structure:
+* **Context** - Background information, that the agent needs
+    * Input data - schema, description, and purpose
+    * Tool usage - Call instructions, names, descriptions, and parameter lists
+    * Relevant data sources - Location, description, schema
+* **Task** - What the agent should accomplish
+    * Objective - High-level description of what the agent must achieve
+    * Step-by-step instructions - Numbered list of steps to go through
+* **Output** - Where and how the agent should write its output
+    * Tabular overview and summary of targets - Two columns: Target name, Target
+      desciption
+    * Format and rules for each target
+* **Constraints** - Rules the agent must always adhere to
+* **Examples** - Examples of how the agent should interact with the user
+* **Role** - The role the agent should assume
+* **Boundaries** - What the agent must never do
+
+Each system prompt is written in a way, that expects the user to deliver the relevant
+information needed to do the initial analysis.
+This information is delivered using the corresponding commands.
 # Tools
 The core of the persistent information sits in the business terms and their link to the
 code. This is kept in the `terms/` directory.
@@ -116,3 +137,4 @@ the tool set below.
 | rejectProposal | CONSOLIDATION ONLY. Reject a proposal with rationale, recorded in the decision log. |
 | regenerateIndex | Regenerate docs/terms/_index.json from the term files: name, status, aliases, open proposal count. Run at sprint end after consolidation. Also used to change status (active/deprecated) via promoteStatus. |
 | promoteStatus | CONSOLIDATION ONLY. Change a term's status: proposed->active, active->deprecated, or deprecated->active (reactivation). Deprecation requires a rationale. Regenerates the index automatically. |
+

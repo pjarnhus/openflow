@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+# bashful - expand {{ path/to/snippet }} lines in a template.
+#
+# One pass, no recursion. Each placeholder line is replaced by the content of
+# the named file, indented by the placeholder's own leading whitespace.
+# Content goes to stdout, diagnostics go to stderr.
+
+set -uo pipefail
+
+prog=${0##*/}
+
+usage() {
+    printf 'usage: %s TEMPLATE\n' "$prog" >&2
+    exit 1
+}
+
+die() {
+    printf '%s: %s\n' "$prog" "$1" >&2
+    exit 1
+}
+
+# Remove leading and trailing whitespace.
+trim() {
+    local s=$1
+    s=${s#"${s%%[![:space:]]*}"}
+    s=${s%"${s##*[![:space:]]}"}
+    printf '%s' "$s"
+}
+
+[ "$#" -eq 1 ] || usage
+template=$1
+
+[ -f "$template" ] && [ -r "$template" ] || die "cannot read $template"
+base=$(dirname -- "$template")
+
+lineno=0
+while IFS= read -r line || [ -n "$line" ]; do
+    lineno=$((lineno + 1))
+
+    if [[ $line =~ ^([[:space:]]*)\{\{(.*)\}\}[[:space:]]*$ ]]; then
+        indent=${BASH_REMATCH[1]}
+        path=$(trim "${BASH_REMATCH[2]}")
+
+        case $path in
+            '' | /* | .. | ../* | */.. | */../*)
+                die "$template:$lineno: invalid path: $path"
+                ;;
+        esac
+
+        src=$base/$path
+
+        if [ ! -f "$src" ] || [ ! -r "$src" ]; then
+            die "$template:$lineno: cannot read $path"
+        fi
+
+        while IFS= read -r sline || [ -n "$sline" ]; do
+            if [ -z "${sline//[[:space:]]/}" ]; then
+                printf '\n'
+            else
+                printf '%s%s\n' "$indent" "$sline"
+            fi
+        done < "$src"
+    else
+        printf '%s\n' "$line"
+    fi
+done < "$template"

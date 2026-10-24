@@ -1,5 +1,6 @@
 import { Plugin } from "@opencode/plugin"
-import { Term, readTerm, writeTerm, regenerate, nextProposalId, getTermsDir, getIndexFile, initTermsDir, initIndexFile } from "./utils/term"
+import { Term, readTerm, writeTerm, regenerate, nextProposalId} from "./utils/term"
+import { initConfig } from "./utils/config"
 import { setDefinition } from "./tools/set_definition"
 import { setImplementation } from "./tools/set_implementation"
 import { proposeChange } from "./tools/propose_change"
@@ -17,9 +18,7 @@ import * as path from "node:path"
 export default Plugin.define({
   id: "openflow",
   async setup(ctx) {
-      const termsDir = path.join(ctx.location.project.directory, "docs", "terms");
-      initTermsDir(termsDir);
-      initIndexFile("_index.json");
+      initConfig(ctx);
       await ctx.tool.transform((editor) => {
           editor.namespace({ name: "openflow", descriptions: "Process tools for the openflow process."});
           editor.add(setDefinition);

@@ -1,7 +1,7 @@
 import * as fs from "node:fs"
 import * as path from "node:path"
 import { err, slugify } from "../utils/helper"
-import { getConfig } from "../utils/config"
+import { getConfig, getRootDir } from "../utils/config"
 
 
 export type Status = "proposed" | "active" | "deprecated"
@@ -27,25 +27,17 @@ export interface Term {
 
 
 export function getTermsDir(): string {
-    // Get config and check for storage type
     const config = getConfig();
-    if(!("terms" in config)) throw new Error("Terms have not been defined in .opencode.json");
-    if(!("type" in config.terms)) throw new Error("Storage type has not been defined for Terms in .opencode.json");
-    if(config.terms.type != "file") throw new Error(`Unknown storage type ${config.terms.type}`);
-    // Return location of Terms directory
-    if("location" not in config.terms) throw new Error("No location set for Terms directory.")
-    return config.terms.location;
+    const term_info = config.terms;
+    const root_dir = getRootDir();
+    return path.join(root_dir, term_info.location)
 }
 
 export function getIndexFile(): string {
-    // Get config and check for storage type
     const config = getConfig();
-    if(!("terms" in config)) throw new Error("Terms have not been defined in .opencode.json");
-    if(!("type" in config.terms)) throw new Error("Storage type has not been defined for Terms in .opencode.json");
-    if(config.terms.type != "file") throw new Error(`Unknown storage type ${config.terms.type}`);
-    // Return location of Terms directory
-    if("index" not in config.terms) throw new Error("No location set for index file.")
-    return config.terms.index;
+    const term_info = config.terms;
+    const root_dir = getRootDir();
+    return path.join(root_dir, term_info.index)
 }
 
 function termFile(name: string): string {

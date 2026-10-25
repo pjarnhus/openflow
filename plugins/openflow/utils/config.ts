@@ -3,7 +3,7 @@ import * as path from "node:path"
 import { pick } from "./helper"
 
 
-const CONFIG_FILE = ".openflow.json";
+export const CONFIG_FILE = ".openflow.json";
 
 export interface OpenflowConfig {
     terms: {
@@ -30,22 +30,28 @@ export function initConfig(ctx: unknown): void {
 export function getRootDir(): string {
     if (root === undefined) {
         throw new Error(
-            `initConfig() did not get a project directory (last value: ${String(lastArg)}). ` +
+            `initConfig() did not get a project directory. ` +
             `A project must be open.`
         );
     }
     return root;
 }
+export function getConfigPath(): string {
+    return path.join(getRootDir(), CONFIG_FILE);
+}
+
+export function configExists(): boolean {
+    return fs.existsSync(getConfigPath());
+}
+
+export function writeConfig(config: OpenflowConfig): void {
+    fs.writeFileSync(getConfigPath(), JSON.stringify(config, null, 2) + "\n", "utf8");
+}
+
 export function getConfig(): OpenflowConfig {
-    if (root === undefined) {
-        throw new Error(
-            `initConfig() did not get a project directory (last value: ${String(lastArg)}). ` +
-            `A project must be open.`
-        );
-    }
-    const configPath = path.join(root, CONFIG_FILE);
+    const configPath = getConfigPath();
     if (!fs.existsSync(configPath)) {
-        throw new Error(`No config at ${configPath}. Run /start_project first.`);
+        throw new Error(`No config at ${configPath}. Run /openflow first.`);
     }
     return JSON.parse(fs.readFileSync(configPath, "utf8")) as OpenflowConfig;
 }

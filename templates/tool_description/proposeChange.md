@@ -1,0 +1,6 @@
+- `openflow.proposeChange` — propose a change to one field of an existing term. Arguments:
+  - `term` (string, required): the term name.
+  - `field` (string, required): either "definition" or "implementation".
+  - `value` (string, required): the proposed new value for that field.
+  - `reason` (string, required): why the change is needed, e.g. observed drift.
+  - `proposed_by` (string, required): your agent name, e.g. "requirements_analyst".

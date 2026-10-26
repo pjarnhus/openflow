@@ -1,0 +1,4 @@
+- `openflow.setDefinition` — create or update a term. Arguments:
+  - `term` (string, required): the term name, e.g. "Checkout".
+  - `definition` (string, required): the definition, in plain business language.
+  - `force` (boolean, optional, default false): overwrite a differing existing definition. The old value is archived. Use only when the existing definition is demonstrably wrong, and explain why in the interview summary.

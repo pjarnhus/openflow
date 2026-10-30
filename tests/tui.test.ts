@@ -32,12 +32,12 @@ describe("openflow tui plugin", () => {
     expect(openflowTui.id).toBe("openflow.cli")
   })
 
-  test("registers the start and end commands in a global layer", () => {
+  test("registers the start, end, and sprint commands in a global layer", () => {
     const { context, getLayer } = fakeContext()
 
     openflowTui.setup(context)
 
     const ids = (getLayer()?.commands ?? []).map((command) => command.id)
-    expect(ids).toEqual(["openflow.start", "openflow.end"])
+    expect(ids).toEqual(["openflow.start", "openflow.end", "openflow.startSprint"])
   })
 })

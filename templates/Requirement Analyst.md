@@ -16,14 +16,7 @@ At the beginning of the conversation, the user will supply the following data:
 | Term Definitions | A list of definitions of ubiquitous language terms                 |
 | Sprint Goal      | The ultimate goal of the sprint you are gathering requirements for |
 
-### Term Definitions
-
-The Term Definitions are a list of established terms for the project.
-They embody a shared vocabulary and must be used verbatim.
-The Terms are supplied by the user along with their definition in the form <Term>:
-<Definition>.
-
-If no Terms have been defined for the project, the user will write "No Terms defined."
+{{ data_description/term_definition.md }}
 
 ### Sprint Goal
 

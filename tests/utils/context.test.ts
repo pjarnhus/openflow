@@ -51,4 +51,16 @@ describe("createSession", () => {
       title: "Sprint",
     })
   })
+
+  test("passes the agent when it is set", async () => {
+    const { context, created } = fakeContext({ directory: "/work" })
+
+    await createSession(context, "Sprint", "Requirement Analyst")
+
+    expect(created[0]).toEqual({
+      location: { directory: "/work" },
+      title: "Sprint",
+      agent: "Requirement Analyst",
+    })
+  })
 })

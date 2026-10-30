@@ -21,7 +21,7 @@ afterEach(() => {
 
 describe("loadTermDefinitions", () => {
   test("reports when there is no terms directory", async () => {
-    expect(await loadTermDefinitions()).toBe("No Terms defined yet.")
+    expect(await loadTermDefinitions()).toBe("No Terms defined.")
   })
 
   test("renders every term file", async () => {

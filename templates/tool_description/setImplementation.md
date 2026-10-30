@@ -1,0 +1,4 @@
+- `openflow.setImplementation` — set the IMPLEMENTATION mapping of a glossary term: where in the codebase the term is relevant and how, as responsibilities and module names, not file paths. Owner: phase reviewer. Arguments:
+  - `term` (string, required): the term name, e.g. "Checkout".
+  - `implementation` (string, required): where the term lives in the code and how, as responsibilities/modules.
+  - `force` (boolean, optional, default false): overwrite a differing existing implementation. The old value is archived in proposals. Fails with the current value unless `force` is true. Cannot modify deprecated terms.

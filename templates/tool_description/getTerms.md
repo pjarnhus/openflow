@@ -1,0 +1,2 @@
+- `openflow.getTerms` — free-text search over all term files. Returns matching terms with status, definition, and matching lines. Use this to look up terms by name, alias, or any text in the definition/implementation. Arguments:
+  - `query` (string, required): free-text query.

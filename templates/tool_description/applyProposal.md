@@ -1,0 +1,4 @@
+- `openflow.applyProposal` — apply a specific proposal to a term's ratified field, with rationale. If multiple proposals target the same field, they must be resolved one by one explicitly. The applied proposal is recorded in the decision log. Arguments:
+  - `term` (string, required): the term name.
+  - `proposal_id` (string, required): the ID of the proposal to apply, from the term's open proposals.
+  - `rationale` (string, required): why the proposal was accepted, recorded in the decision log.

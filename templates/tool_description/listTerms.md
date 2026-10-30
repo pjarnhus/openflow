@@ -1,0 +1,1 @@
+- `openflow.listTerms` — list all glossary terms from the generated index (name, status, aliases, open proposal count). Suitable for compact injection of the term list into an agent's context. Takes no arguments; errors if the index does not exist yet (run `regenerateIndex` first).

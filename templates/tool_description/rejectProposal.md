@@ -1,0 +1,4 @@
+- `openflow.rejectProposal` — reject a proposal with rationale, recorded in the decision log. Arguments:
+  - `term` (string, required): the term name.
+  - `proposal_id` (string, required): the ID of the proposal to reject, from the term's open proposals.
+  - `rationale` (string, required): why the proposal was rejected, recorded in the decision log.

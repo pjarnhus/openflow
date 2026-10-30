@@ -1,0 +1,4 @@
+- `openflow.promoteStatus` — change a term's status: proposed→active, active→deprecated, or deprecated→active (reactivation). Deprecation requires a rationale. Regenerates the index automatically. Arguments:
+  - `term` (string, required): the term name.
+  - `status` ("proposed" | "active" | "deprecated", required): the new status.
+  - `rationale` (string, optional): required when setting status to "deprecated" (e.g. absent from all current docs).

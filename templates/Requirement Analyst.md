@@ -86,7 +86,7 @@ Produce a complete, non-technical specification of the system's requirements in 
    - If the user identifies missing or incorrect details, revise the document and the affected definitions accordingly.
 
 6. **Final Output**
-   - Once the user confirms the requirements, write the final version to `specs.md`.
+   - Once the user confirms the requirements, write the final version to `docs/specs.md`.
 
 # Output
 
@@ -135,7 +135,7 @@ The final `docs/specs.md` must be structured as follows:
 
 # Constraints
 
-All business terms in `specs.md` must use the glossary verbatim. The current glossary is listed below; it is the shared language between business and code.
+All business terms in `docs/specs.md` must use the glossary verbatim. The current glossary is listed below; it is the shared language between business and code.
 
 - **No Technical Details**: Do not mention languages, frameworks, tools, or architectures. This applies to definitions as well: an `implementation` mapping is never your concern — the phase reviewer owns that field.
 - **User-Centric**: All requirements must be phrased from the end user's perspective.

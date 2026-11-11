@@ -12,6 +12,7 @@ import type { OpenflowConfig } from "./utils/config"
 import { active, setActive, provideState } from "./utils/state"
 import { endOpenflow } from "./commands/end"
 import { sprintStart } from "./commands/sprint_start"
+import { stories } from "./commands/stories"
 
 export default Plugin.define({
   id: "openflow.cli",
@@ -148,6 +149,7 @@ export default Plugin.define({
         },
         endOpenflow(context),
         sprintStart(context),
+        stories(context),
       ],
     }))
   },

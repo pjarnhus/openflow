@@ -1,10 +1,8 @@
 import type { Plugin } from "@opencode/plugin/tui"
 import { createSession } from "../utils/context"
-import { getRootDir } from "../utils/config"
+import { nextSprintNumber } from "../utils/sprints"
 import { loadTermDefinitions } from "../data_loaders/term_definitions"
 import { active } from "../utils/state"
-import * as fs from "node:fs"
-import * as path from "node:path"
 
 const REQUIREMENT_ANALYST_AGENT = "Requirement Analyst"
 const MAX_TITLE_GOAL_LENGTH = 60
@@ -49,13 +47,7 @@ export function sprintStart(ctx: Plugin.Context) {
         return
       }
 
-      const sprintsDir = path.join(getRootDir(), "docs", "sprints")
-      const dirCount = fs.existsSync(sprintsDir)
-        ? fs
-            .readdirSync(sprintsDir, { withFileTypes: true })
-            .filter((entry) => entry.isDirectory()).length + 1
-        : 1
-      const title = `Sprint ${dirCount} - ${truncateGoal(goal)}`
+      const title = `Sprint ${nextSprintNumber()} - ${truncateGoal(goal)}`
       const prompt = `${termDefinitions}\n\n## Sprint Goal\n${goal}\n`
 
       const session = await createSession(ctx, title, REQUIREMENT_ANALYST_AGENT).catch(
